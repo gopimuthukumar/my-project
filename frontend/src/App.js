@@ -61,7 +61,7 @@ function App() {
     const run = async () => {
       setLoading(true);
       try {
-        const res = await api.get("/products/");
+        const res = await api.get("/products");
         setProducts(res.data);
         setError("");
       } catch (err) {
@@ -155,7 +155,7 @@ function App() {
       resetForm();
       fetchProducts();
     } catch (err) {
-      setError(err.response?.data?.detail || "Operation failed");
+      setError(err.response?.data?.detail || "Product ID already exists");
     }
     setLoading(false);
   };
@@ -195,6 +195,10 @@ function App() {
     typeof n === "number" ? n.toFixed(2) : Number(n || 0).toFixed(2);
 console.log(filteredProducts,'----');
 
+  const handleRefresh = () => {
+  setFilter("");      // clear search box
+  fetchProducts();   // reload products
+};
   return (
     <div className="app-bg">
       <header className="topbar">
@@ -203,7 +207,7 @@ console.log(filteredProducts,'----');
           <h1>Telusko Trac</h1>
         </div>
         <div className="top-actions">
-          <button className="btn btn-light" onClick={fetchProducts} disabled={loading}>
+          <button className="btn btn-light" onClick={handleRefresh} disabled={loading}>
             Refresh
           </button>
         </div>
@@ -332,10 +336,10 @@ console.log(filteredProducts,'----');
                   </thead>
                   <tbody>
                     {filteredProducts?.map((p) => (
-                      <tr key={p.ID}>
-                        <td>{p.ID}</td>
+                      <tr key={p.id}>
+                        <td>{p.id}</td>
                         <td className="name-cell">{p.name}</td>
-                        <td className="desc-cell" title={p.description}>{p.DESCRIPTION}</td>
+                        <td className="desc-cell" title={p.description}>{p.description}</td>
                         <td className="price-cell">${currency(p.price)}</td>
                         <td>
                           <span className="qty-badge">{p.quantity}</span>

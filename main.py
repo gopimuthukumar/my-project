@@ -53,37 +53,45 @@ def Get_All_Product(db:Session = Depends(get_db)):
     return db_products
 
 @app.get("/products/{id}")
-def Get_Product_by_ID (id:int,db:Session = Depends(get_db)):
-    db_product = db.query(database_models.product).filter(database_models.product.id == id).first()
-    if db_product:
-        return db_product
-    return "Product Not Found"
-
-@app.post("/products")
-def Add_Product(product : product,db:Session = Depends(get_db)):
-    db.add(database_models.product(**product.model_dump()))
-    db.commit()
+def get_product_by_id(id: int, db: Session = Depends(get_db)):
+    product = db.query(database_models.product).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product Not Found")
     return product
 
-@app.put("/products")
-def Update_Product(id:int,product : product,db:Session = Depends(get_db)) :
-    db_product = db.query(database_models.product).filter(database_models.product.id == id).first()
-    if db_product :
-        db_product.name = products.name
-        db_product.description = products.description
-        db_product.PRICE = products.PRICE
-        db_product.quantity = products.quantity
-        db.commit()
-        return "product Updated Successfully"
-    else:
-         return "No Produte Found"
+@app.post("/products/")
+def Add_Product(product : product,db:Session = Depends(get_db)):
+    db_product = database_models.product(**product.model_dump())
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
 
-@app.delete("/products")
-def Delete_Product(id: int,db:Session = Depends(get_db)):
+@app.put("/products/{id}")
+def Update_Product(id: int, product: product, db: Session = Depends(get_db)):
+    db_product = db.query(database_models.product)\
+                   .filter(database_models.product.id == id)\
+                   .first()
+
+    if not db_product:
+        raise HTTPException(status_code=404, detail="No Product Found")
+
+    db_product.name = product.name
+    db_product.description = product.description
+    db_product.price = product.price
+    db_product.quantity = product.quantity
+
+    db.commit()
+    db.refresh(db_product)
+
+    return {"message": "Product Updated Successfully", "product": db_product}
+
+
+@app.delete("/products/{id}")
+def delete_product(id: int, db: Session = Depends(get_db)):
     db_product = db.query(database_models.product).filter(database_models.product.id == id).first()
-    if db_product:
-        db.delete(db_product)
-        db.commit()
-        return "Product Deleted Successfully"
-    else:
-        return "Product Not Found"
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Product Not Found")
+    db.delete(db_product)
+    db.commit()
+    return {"message": "Product Deleted"}
