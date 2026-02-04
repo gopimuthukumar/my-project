@@ -22,10 +22,10 @@ def greet():
     return "welcome to my environment"
 
 products = [
-    product(id=1,name='Phone',description='Low Budget',price=99,quantity=10),
-    product(id=2,name='Laptop',description='Gaming Laptop',price=999,quantity=6),
-    product(id=3,name='Airpods',description='Perimum airpods',price=999,quantity=12),
-    product(id=4,name='Smart Watch',description='High Quality',price=60,quantity=5)
+    #product(id=1,name='Phone',description='Low Budget',price=99,quantity=10),
+    #product(id=2,name='Laptop',description='Gaming Laptop',price=999,quantity=6),
+    #product(id=3,name='Airpods',description='Perimum airpods',price=999,quantity=12),
+    #product(id=4,name='Smart Watch',description='High Quality',price=60,quantity=5)
 ]
 
 def get_db():
