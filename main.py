@@ -49,15 +49,19 @@ def init_db():
 init_db()
 
 @app.get("/products")
-def Get_All_Product(db:Session = Depends(get_db)):
-    db_products = db.query(database_models.product).all()
-    return db_products
+def get_all_products(db: Session = Depends(get_db)):
+    return db.query(database_models.product).all()
+
 
 @app.get("/products/{id}")
 def get_product_by_id(id: int, db: Session = Depends(get_db)):
-    product = db.query(database_models.product).first()
+    product = db.query(database_models.product)\
+                .filter(database_models.product.id == id)\
+                .first()
+
     if not product:
         raise HTTPException(status_code=404, detail="Product Not Found")
+
     return product
 
 @app.post("/products/")

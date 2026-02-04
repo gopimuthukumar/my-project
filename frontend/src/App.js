@@ -47,7 +47,7 @@ function App() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/products/");
+      const res = await api.get("/products");
       setProducts(res.data);
       setError("");
     } catch (err) {
