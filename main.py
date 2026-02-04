@@ -1,4 +1,5 @@
 from fastapi import FastAPI,Depends
+from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import product
 from database import engine,session
