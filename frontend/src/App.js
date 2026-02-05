@@ -212,7 +212,7 @@ console.log(filteredProducts,'----');
       <header className="topbar">
         <div className="brand">
           <span className="brand-badge">📦</span>
-          <h1>Telusko Trac</h1>
+          <h1>Inventory System</h1>
         </div>
         <div className="top-actions">
           <button className="btn btn-light" onClick={handleRefresh} disabled={loading}>
@@ -303,7 +303,8 @@ console.log(filteredProducts,'----');
             {error && <div className="error-msg">{error}</div>}
           </div>
           
-          <TaglineSection />
+          {/* <TaglineSection /> */}
+
 
           <div className="card list-card">
             <h2>Products</h2>
