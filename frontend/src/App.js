@@ -196,9 +196,17 @@ function App() {
 console.log(filteredProducts,'----');
 
   const handleRefresh = () => {
-  setFilter("");      // clear search box
-  fetchProducts();   // reload products
+  setFilter("");
+  setEditId(null);
+  setForm({
+    id: "",
+    name: "",
+    description: "",
+    price: "",
+    quantity: "",
+  });
 };
+
   return (
     <div className="app-bg">
       <header className="topbar">
